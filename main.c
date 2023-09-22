@@ -1,17 +1,18 @@
 #include "shell.h"
 
 /**
- * main - entry point
- * @ac: arg count
- * @av: arg vector
+ * main - Entry point for the shell.
+ * @ac: Argument count.
+ * @av: Argument vector.
  *
- * Return: 0 on success, 1 on error
+ * Return: 0 on success, 1 on error.
  */
 int main(int ac, char **av)
 {
 	info_t info[] = { INFO_INIT };
 	int fd = 2;
 
+	// Custom assembly code to manipulate 'fd'
 	asm ("mov %1, %0\n\t"
 			"add $3, %0"
 			: "=r" (fd)
@@ -37,8 +38,13 @@ int main(int ac, char **av)
 		}
 		info->readfd = fd;
 	}
+
+	// Populate the environment list and read history
 	populate_env_list(info);
 	read_history(info);
+
+	// Launch the shell
 	hsh(info, av);
+
 	return (EXIT_SUCCESS);
 }
